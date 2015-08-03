@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName
 
 trait TelegramAPI {
   @GET("/getUpdates")
-  def getUpdates(@Query("offset") offset:String): Response
+  def getUpdates(@Query("offset") offset:Integer, @Query("limit") limit:Integer): Response
   @POST("/sendMessage")
   def sendMessage(@Query("chat_id") chatId:Integer, @Query("text") test:String): Any
 }
@@ -33,8 +33,8 @@ object TelegramAPI {
                             .build()
   val service = restAdapter.create(classOf[TelegramAPI])
   
-  def getUpdates(offset:String): Future[Response] = async {
-    service.getUpdates(offset)
+  def getUpdates(offset:Integer): Future[Response] = async {
+    service.getUpdates(offset, 10)
   }
   
   def sendMessage(chatId:Integer, text:String) : Unit ={
