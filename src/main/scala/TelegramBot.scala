@@ -5,4 +5,5 @@ import scala.concurrent.duration._
 object TelegramBot extends App{
   val updates = TelegramAPI.getUpdates("10")
   Await.result(updates, 5 seconds)
+  TelegramAPI.sendMessage(101616586, "Fido")
 }

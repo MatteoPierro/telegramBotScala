@@ -3,6 +3,7 @@ package com.elios85.telegrambot.api
 import retrofit.http.GET
 import retrofit.http.POST
 import retrofit.http.Query
+import retrofit.http.Body
 import retrofit.RestAdapter
 import com.typesafe.config._
 import scala.async.Async._
@@ -13,18 +14,14 @@ import com.google.gson.annotations.SerializedName
 trait TelegramAPI {
   @GET("/getUpdates")
   def getUpdates(@Query("offset") offset:String): Response
-  @POST("/getMessage")
-  def getMessage(message: Message)
+  @POST("/sendMessage")
+  def sendMessage(@Query("chat_id") chatId:Integer, @Query("text") test:String): Any
 }
 
 class Response(){
   var ok: Boolean = false
   var result: Any = null
 }
-
-class Message() {
-  
-} 
 
 object TelegramAPI {
   private val conf = ConfigFactory.load()
@@ -38,5 +35,9 @@ object TelegramAPI {
   
   def getUpdates(offset:String): Future[Response] = async {
     service.getUpdates(offset)
+  }
+  
+  def sendMessage(chatId:Integer, text:String) : Unit ={
+    service.sendMessage(chatId,text)
   }
 }
