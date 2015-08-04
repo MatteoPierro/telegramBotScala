@@ -10,6 +10,7 @@ import scala.async.Async._
 import scala.concurrent.{ ExecutionContext, Future, Promise }
 import ExecutionContext.Implicits.global
 import com.google.gson.annotations.SerializedName
+import com.google.gson.JsonArray
 
 trait TelegramAPI {
   @GET("/getUpdates")
@@ -18,10 +19,7 @@ trait TelegramAPI {
   def sendMessage(@Query("chat_id") chatId:Integer, @Query("text") test:String): Any
 }
 
-class Response(){
-  var ok: Boolean = false
-  var result: Any = null
-}
+case class Response(var ok: Boolean , var result: JsonArray)
 
 object TelegramAPI {
   private val conf = ConfigFactory.load()

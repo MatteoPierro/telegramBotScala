@@ -8,7 +8,9 @@ import scala.concurrent.duration._
 object TelegramBot extends App{
   val updates = TelegramAPI.getUpdates(333582343)
   updates onComplete { 
-    case Success(response) => println("ok "+response.ok)
+    case Success(response) => 
+      println("ok "+response.ok)
+      println("result "+response.result)
     case Failure(t) => println("An error has occured: " + t.getMessage)
   }
   Await.result(updates, 5 seconds)
