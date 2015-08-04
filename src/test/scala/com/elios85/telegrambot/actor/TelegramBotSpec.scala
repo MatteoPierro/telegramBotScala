@@ -24,6 +24,16 @@ with ImplicitSender{
      }
   }
   
+  "TelegramBot" should {
+    "send a telegram message when a Message arrives" in new scope{
+      val chatId = 1
+      val text = "test"
+      val message = Message(chatId, text)
+      telegramBot ! message
+      verify(telegramApi).sendMessage(chatId, text)
+    }
+  }
+  
   private trait scope {
     val telegramApi = Mockito.mock(classOf[TelegramAPI])
     val telegramBot = TestActorRef(new TelegramBotActor(telegramApi))

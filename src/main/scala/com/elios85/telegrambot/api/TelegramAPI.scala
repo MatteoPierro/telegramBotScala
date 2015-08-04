@@ -16,7 +16,7 @@ trait TelegramAPI {
   @GET("/getUpdates")
   def getUpdates(@Query("offset") offset:Integer, @Query("limit") limit:Integer): Response
   @POST("/sendMessage")
-  def sendMessage(@Query("chat_id") chatId:Integer, @Query("text") test:String): Any
+  def sendMessage(@Query("chat_id") chatId:Integer, @Query("text") text:String): Any
 }
 
 case class Response(var ok: Boolean , var result: JsonArray)
