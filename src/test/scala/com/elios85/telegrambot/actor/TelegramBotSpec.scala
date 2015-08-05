@@ -11,7 +11,7 @@ import com.elios85.telegrambot.api.Response
 import com.google.gson._
 
 
-class TelegramBotActorSpec extends TestKit(ActorSystem("TelegramBotActorSpec"))
+class ReceiverActorSpec extends TestKit(ActorSystem("ReceiverActorSpec"))
 with WordSpecLike
 with BeforeAndAfterAll
 with ImplicitSender{
@@ -20,14 +20,14 @@ with ImplicitSender{
     system.shutdown()
   }
   
-  "TelegramBot" should {
+  "ReceiverBot" should {
      "retrive telgram messages if an Update message arrives" in new scope{
        telegramBot ! Update
        verify(telegramApi).getUpdates(any(classOf[Integer]), any(classOf[Integer]))
      }
   }
   
-  "TelegramBot" should {
+  "ReceiverBot" should {
     "send a Message to sender actor when receive at least a telegram message" in new scope{
       val chatId = 1
       val text = "a message"
@@ -51,6 +51,6 @@ with ImplicitSender{
   private trait scope {
     val telegramApi = Mockito.mock(classOf[TelegramAPI])
     val senderProbe = TestProbe()
-    val telegramBot = TestActorRef(new TelegramBotActor(telegramApi, senderProbe.ref))
+    val telegramBot = TestActorRef(new ReceiverActor(telegramApi, senderProbe.ref))
   }
 }

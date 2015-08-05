@@ -8,7 +8,7 @@ import akka.actor._
 object TelegramBot extends App{
   val system = ActorSystem("TelegramBot")
   val echoSender = system.actorOf(Props(new EchoSenderActor(TelegramAPI.service)), "senderActor")
-  val telegramBot = system.actorOf(Props(new TelegramBotActor(TelegramAPI.service, echoSender)), "telgramBot")
+  val telegramBot = system.actorOf(Props(new ReceiverActor(TelegramAPI.service, echoSender)), "telgramBot")
    system.scheduler.schedule(0 second, 1 second) {
     telegramBot ! Update
   }

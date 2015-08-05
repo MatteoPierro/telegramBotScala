@@ -5,7 +5,7 @@ import com.elios85.telegrambot.api._
 import com.google.gson.JsonObject
 import scala.collection.JavaConversions._
 
-class TelegramBotActor(telegramApi: TelegramAPI, sender: ActorRef) extends Actor with ActorLogging{    
+class ReceiverActor(telegramApi: TelegramAPI, sender: ActorRef) extends Actor with ActorLogging{    
   def receive = receiveBotMessage(0)
   
   def receiveBotMessage(lastUpdateId: Int):Receive ={
