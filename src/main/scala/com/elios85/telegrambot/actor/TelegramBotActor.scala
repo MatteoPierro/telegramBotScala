@@ -4,11 +4,19 @@ import akka.actor._
 import com.elios85.telegrambot.api._
 import com.google.gson.JsonObject
 import scala.collection.JavaConversions._
+import scala.concurrent.duration._
 
 class TelegramBotActor(telegramApi: TelegramAPI) extends Actor with ActorLogging{
+  import context.dispatcher
   
-  def receive = {
-    case Update => handleTelegramResponse(telegramApi.getUpdates(0, 10)) 
+  context.system.scheduler.schedule(0 second, 10 seconds) {
+    self ! Update
+  }
+  
+  def receive = receiveBotMessage(0)
+  
+  def receiveBotMessage(lastUpdateId: Int):Receive ={
+    case Update => handleTelegramResponse(telegramApi.getUpdates(lastUpdateId, 10)) 
     case Message(chatId, text) => telegramApi.sendMessage(chatId, text)
     case _ =>
   }

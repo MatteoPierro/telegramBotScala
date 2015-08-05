@@ -6,5 +6,4 @@ import akka.actor._
 object TelegramBot extends App{
   val system = ActorSystem("TelegramBot")
   val telegramBot = system.actorOf(Props(new TelegramBotActor(TelegramAPI.service)), "telgramBot")
-  telegramBot ! Update
 }
