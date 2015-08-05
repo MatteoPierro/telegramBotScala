@@ -8,7 +8,7 @@ import org.mockito.Mockito._
 import org.scalatest.{BeforeAndAfterAll, WordSpecLike}
 import com.elios85.telegrambot.api.TelegramAPI
 
-class TelegramBotActorSpec extends TestKit(ActorSystem("UserProfileActorSpec"))
+class TelegramBotActorSpec extends TestKit(ActorSystem("TelegramBotActorSpec"))
 with WordSpecLike
 with BeforeAndAfterAll
 with ImplicitSender{
