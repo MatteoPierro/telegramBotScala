@@ -5,13 +5,12 @@ import com.elios85.telegrambot.api._
 import com.google.gson.JsonObject
 import scala.collection.JavaConversions._
 
-class TelegramBotActor(telegramApi: TelegramAPI) extends Actor with ActorLogging{    
+class TelegramBotActor(telegramApi: TelegramAPI, sender: ActorRef) extends Actor with ActorLogging{    
   def receive = receiveBotMessage(0)
   
   def receiveBotMessage(lastUpdateId: Int):Receive ={
     case Update => handleTelegramResponse(telegramApi.getUpdates(lastUpdateId, 10)) 
     case Ack(updateId) => context become receiveBotMessage(updateId + 1)
-    case Message(chatId, text) => telegramApi.sendMessage(chatId, text)
     case _ =>
   }
   
@@ -23,7 +22,7 @@ class TelegramBotActor(telegramApi: TelegramAPI) extends Actor with ActorLogging
         val text = messageObject get("text") getAsString
         val chatId = messageObject.get("chat").getAsJsonObject().get("id").getAsInt
         self ! Ack(updateId)
-        self ! Message(chatId, text)
+        sender ! Message(chatId, text)
       }
       
     case _ => log.debug("ko reponse from Telegram") 

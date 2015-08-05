@@ -32,10 +32,3 @@ with ImplicitSender{
     val echoSender = TestActorRef(new EchoSenderActor(telegramApi))
   }
 }
-
-class EchoSenderActor(telegramApi: TelegramAPI) extends Actor with ActorLogging{
-  def receive = {
-    case Message(chatId, text) => telegramApi.sendMessage(chatId, text)
-    case _ =>  
-  }
-}

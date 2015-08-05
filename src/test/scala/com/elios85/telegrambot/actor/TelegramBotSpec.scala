@@ -7,6 +7,9 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.{BeforeAndAfterAll, WordSpecLike}
 import com.elios85.telegrambot.api.TelegramAPI
+import com.elios85.telegrambot.api.Response
+import com.google.gson._
+
 
 class TelegramBotActorSpec extends TestKit(ActorSystem("TelegramBotActorSpec"))
 with WordSpecLike
@@ -25,17 +28,29 @@ with ImplicitSender{
   }
   
   "TelegramBot" should {
-    "send a telegram message when a Message arrives" in new scope{
+    "send a Message to sender actor when receive at least a telegram message" in new scope{
       val chatId = 1
-      val text = "test"
-      val message = Message(chatId, text)
-      telegramBot ! message
-      verify(telegramApi).sendMessage(chatId, text)
+      val text = "a message"
+      val chat = new JsonObject()
+      chat.addProperty("id", chatId)
+      val message = new JsonObject()
+      message.add("chat", chat)
+      message.addProperty("text", text)
+      val result = new JsonObject()
+      result.addProperty("update_id", 333582340)
+      result.add("message", message)
+      val results = new JsonArray()
+      results.add(result)
+      val response = Response(true, results)
+      when(telegramApi.getUpdates(anyInt(), anyInt())).thenReturn(response)
+      telegramBot ! Update
+      senderProbe.expectMsg(Message(chatId, text))
     }
   }
   
   private trait scope {
     val telegramApi = Mockito.mock(classOf[TelegramAPI])
-    val telegramBot = TestActorRef(new TelegramBotActor(telegramApi))
+    val senderProbe = TestProbe()
+    val telegramBot = TestActorRef(new TelegramBotActor(telegramApi, senderProbe.ref))
   }
 }
