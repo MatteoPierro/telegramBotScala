@@ -30,12 +30,4 @@ object TelegramAPI {
                             .setLogLevel(RestAdapter.LogLevel.FULL)
                             .build()
   def service = restAdapter.create(classOf[TelegramAPI])
-  
-  def getUpdates(offset:Integer): Future[Response] = async {
-    service.getUpdates(offset, 10)
-  }
-  
-  def sendMessage(chatId:Integer, text:String) : Unit ={
-    service.sendMessage(chatId,text)
-  }
 }
