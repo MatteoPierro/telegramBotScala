@@ -18,10 +18,10 @@ class ReceiverActor(telegramApi: TelegramAPI, sender: ActorRef) extends Actor wi
     case Response(true, messages) => 
       for(message <- messages iterator){
         val updateId = message.getAsJsonObject.get("update_id").getAsInt
+        self ! Ack(updateId)
         val messageObject = message.getAsJsonObject.get("message").getAsJsonObject
         val text = messageObject get("text") getAsString
         val chatId = messageObject.get("chat").getAsJsonObject().get("id").getAsInt
-        self ! Ack(updateId)
         sender ! Message(chatId, text)
       }
       

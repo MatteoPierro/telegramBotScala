@@ -21,7 +21,7 @@ with ImplicitSender{
   }
   
   "ReceiverBot" should {
-     "retrive telgram messages if an Update message arrives" in new scope{
+     "retrive telegram messages if an Update message arrives" in new scope{
        telegramBot ! Update
        verify(telegramApi).getUpdates(any(classOf[Integer]), any(classOf[Integer]))
      }

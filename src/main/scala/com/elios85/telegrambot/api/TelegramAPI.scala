@@ -29,7 +29,7 @@ object TelegramAPI {
                             .setEndpoint(BASE_URL+token)
                             .setLogLevel(RestAdapter.LogLevel.FULL)
                             .build()
-  val service = restAdapter.create(classOf[TelegramAPI])
+  def service = restAdapter.create(classOf[TelegramAPI])
   
   def getUpdates(offset:Integer): Future[Response] = async {
     service.getUpdates(offset, 10)
