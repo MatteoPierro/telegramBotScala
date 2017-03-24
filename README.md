@@ -1,7 +1,7 @@
-#TelegramBotScala
-##Configuration
+# TelegramBotScala
+## Configuration
 edit `src/main/resources/application.conf` typing your bot token
 
-##Run
+## Run
 
 `sbt run`
